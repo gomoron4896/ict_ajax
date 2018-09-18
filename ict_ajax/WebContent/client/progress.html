@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<progress id="prog" value="0"></progress>
+	<button type="button">프로그래스바 동작</button>
+	<script>
+		var btn = document.querySelector('button');
+		var prog = document.querySelector('#prog');
+		prog.max = 100;
+		btn.onclick = function() {
+			setInterval(function() {
+				prog.value += 1;
+			}, 200);
+		}
+	</script>
+</body>
+</html>

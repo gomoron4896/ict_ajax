@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	이름 :
+	<input type="text" name="name" id="name" value="김기섭">
+	<br> 아이디 :
+	<input type="text" name="id" id="id" value="oxy">
+	<br> 비밀번호 :
+	<input type="passward" name="pwd" id="pwd" value="@rltjq4896">
+	<br> 성별 :
+	<select name="trans" id="trans">
+		<option value="1">남</option>
+		<option value="2">여</option>
+	</select>
+	<button data-json="/json/server/test.jsp">회원 가입</button>
+	<script>
+		var btns = document.querySelectorAll('button[data-json]');
+		for (var i = 0; i < btns.length; i++) {
+			var btn = btns[i];
+			btn.onclick = function() {
+				alert(this.getAttribute('data-json'));
+				var url = this.getAttribute('data-json')
+				var xhr = new XMLHttpRequest();
+				var name = document.querySelector('#name').value;
+				var id = document.querySelector('#id').value;
+				var pwd = document.querySelector('#pwd').value;
+				var trans = document.querySelector('#trans').value;
+
+				var param = {
+					name : name,
+					id : id,
+					pwd : pwd,
+					trans : trans
+				}
+
+				param = JSON.stringify(param);
+				alert(param);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == xhr.DONE) {
+						alert(xhr.status);
+						if (xhr.status == 200) {
+							var json = xhr.responseText;
+							var list = JSON.parse(json);
+							list.forEach(function(element) {
+								alert(element.name + element.id);
+							});
+						} else {
+							alert('SOMETHING WRONG');
+						}
+					}
+				}
+				xhr.open('POST', url);
+				xhr.send(param);
+			}
+		}
+	</script>
+</body>
+</html>

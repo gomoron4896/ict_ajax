@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="rDiv">
+		<table border="1">
+			<thead>
+			<tr>
+				<th>번호</th>
+				<th>이름</th>
+				<th>부서번호</th>
+				<th>직무</th>
+			</tr>
+			</thead>
+			<tbody id="rBody">
+			</tbody>
+		</table>
+	</div>
+	부서이름 :
+	<input type="text" name="diname" id="diname" value="KING">
+	<button data-json="/json/server/depart.jsp">전송</button>
+</body>
+<script>
+	var btns = document.querySelectorAll('button[data-json]');
+	for (var i = 0; i < btns.length; i++) {
+		btns[i].onclick = function() {
+			var xhr = new XMLHttpRequest();
+			var url = this.getAttribute('data-json');
+			var diname = document.querySelector('#diname').value;
+			var param = {
+				diname : diname
+			}
+			alert(param);
+			param = JSON.stringify(param);
+			alert(param);
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == xhr.DONE) {
+					if (xhr.status == 200) {
+						var res = JSON.parse(xhr.responseText);
+						for(var i = 0; i < res.length; i++) {
+							var html = "<tr>";
+							html += "<td>" + res[i].EMPNO + "</td>";
+							html += "<td>" + res[i].EMPNAME + "</td>";
+							html += "<td>" + res[i].DEPTNO + "</td>";
+							html += "<td>" + res[i].EMPJOB + "</td>";
+							html += "</tr>";
+							var rBody = document.querySelector("#rBody");
+							rBody.insertAdjacentHTML("beforeend" ,html);
+						}
+					} else {
+						alert('SOMETHING WRONG');
+					}
+				}
+			}
+			xhr.open('GET', url + '?param=' + encodeURIComponent(param));
+			xhr.send();
+		}
+	}
+</script>
+</html>

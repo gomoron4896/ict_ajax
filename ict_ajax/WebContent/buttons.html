@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div id="htmlDiv" style="background-color:red"></div>
+	<button data-target="GET,/json/content.jsp">버튼</button>
+	<button data-target="POST,/json/content.jsp">섭밋</button>
+	<script type="text/javascript">
+		var btns = document.querySelectorAll('button[data-target]');
+		var htmlDiv = document.querySelector('#htmlDiv');
+		
+		function callback(res) {
+			htmlDiv.insertAdjacentHTML('afterbegin',res);
+		}
+		for (var i = 0; i < btns.length; i++) {
+			var btn = btns[i];
+			btn.onclick = function() {
+				var targets = this.getAttribute('data-target').split(',');
+				var method = targets[0];
+				var uri = targets[1];
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState==xhr.DONE) {
+						callback(xhr.response)
+					}
+				}
+				xhr.open(method,uri);
+				xhr.send();
+			}
+		}
+	</script>
+</body>
+</html>

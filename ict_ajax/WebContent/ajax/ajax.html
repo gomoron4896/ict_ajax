@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/json/AjaxUtil.js"></script>
+</head>
+<body>
+	부서명 :
+	<input type="text" name="diname" id="diname">
+	<button onclick="getData()">검색</button>
+	<div id="rDiv">
+		<table border="1">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>이름</th>
+					<th>가격</th>
+					<th>개봉일</th>
+					<th>폐막일</th>
+					<th>비고</th>
+					<th>썸네일</th>
+				</tr>
+			</thead>
+			<tbody id="rBody">
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+		var conf = {
+			url : '/json/ticket/list'
+			
+			,cb : function(res) {
+				var res = JSON.parse(res);
+				alert(`page : ${res.page}` );
+				var html = '';
+				if(res.list.length==0) {
+					html += '<tr>';
+					html += '<td colspan="7">NO DATA</td>';
+					html += '</tr>';
+				}
+				for(var vo of res.list) {
+					html += '<tr>';
+					html += '<td>' + vo.tmnum + '</td>';
+					html += '<td><a href="/json/view.jsp?tmnum=' + vo.tmnum + '">' + vo.tmname + '</td>';
+					html += '<td>' + vo.tmprice + '</td>';
+					html += '<td>' + vo.tmstartdat + '</td>';
+					html += '<td>' + vo.tmenddat + '</td>';
+					html += '<td>' + vo.tmdesc + '</td>';
+					html += '<td>' + vo.tmimg + '</td>';
+					html += '</tr>';
+				}
+				document.querySelector('#rBody').innerHTML = html;
+			}
+		 
+			,err : function(res) {
+				document.querySelector('#rDiv').innerHTML = res;
+			}
+		}
+		
+		function getData() {
+			var diname = document.querySelector('#diname').value;
+			var params = {diname:diname};
+			conf.params = params;
+			var au = new AjaxUtil(conf);
+			au.send();
+		}
+	</script>
+</body>
+</html>

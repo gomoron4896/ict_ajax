@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/json/AjaxUtil.js"></script>
+</head>
+<body>
+	<form method="post">
+		영화 제목 <input type="text" name="tmname">
+		영화 가격 <input type="number" name="tmprice">
+		상영 개시일 <input type="date" name="tmstartdat">
+		상영 종료일 <input type="date" name="tmenddat">
+		<button type="button" onclick="insertTicket()">입력</button>
+	</form>
+	<script type="text/javascript">
+		function insertTicket() {
+			var form = document.querySelector('form');
+			var tmname = document.querySelector('input[name=tmname]').value
+			var tmprice = document.querySelector('input[name=tmprice]').value
+			var tmstartdat = document.querySelector('input[name=tmstartdat]').value
+			var tmenddat = document.querySelector('input[name=tmenddat]').value
+			
+			var params = {
+					tmname : tmname
+					, tmprice : tmprice
+					, tmstartdat : tmstartdat
+					, tmenddat : tmenddat
+			}
+			var conf = {
+				url : '/json/ticket/insert'
+				, method : 'POST'
+				, params : params
+			}
+			var au = new AjaxUtil(conf);
+			au.send();
+		}
+	</script>
+</body>
+</html>
